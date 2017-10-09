@@ -1,13 +1,16 @@
 #!/bin/sh
 
 # usage
-# bin/mkleaf localhost
+# bin/mkleaf host_name <host_ip>
 
 BASE_NAME=$1
+IP_ADDRESS=$2
 
 SAN_NAMES="DNS:$BASE_NAME,DNS:*.$BASE_NAME,DNS:$BASE_NAME.local,DNS:*.$BASE_NAME.local"
 if [ "$BASE_NAME" == 'localhost' ];
   then SAN_NAMES="$SAN_NAMES,DNS:127.0.0.1,IP:127.0.0.1"; fi
+if [ ! -z "$IP_ADDRESS" ];
+  then SAN_NAMES="$SAN_NAMES,DNS:$IP_ADDRESS,IP:$IP_ADDRESS"; fi
 export SAN_NAMES="$SAN_NAMES"
 
 BITS=2048
