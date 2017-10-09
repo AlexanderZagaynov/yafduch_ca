@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# usage
+# bin/mkleaf localhost
+
+BASE_NAME=$1
+
+SAN_NAMES="DNS:$BASE_NAME,DNS:*.$BASE_NAME,DNS:$BASE_NAME.local,DNS:*.$BASE_NAME.local"
+if [ "$BASE_NAME" == 'localhost' ];
+  then SAN_NAMES="$SAN_NAMES,DNS:127.0.0.1,IP:127.0.0.1"; fi
+export SAN_NAMES="$SAN_NAMES"
+
+BITS=2048
+DAYS=730 # 365 * 2
+
+KEY_PATH="$BASE_NAME.key"
+CRT_PATH="$BASE_NAME.crt"
+CNF_PATH=leaf.cnf
+EXT_PATH=leaf.ext
+
+CA_CRT=yafduch.crt
+CA_KEY=yafduch.key
+
+openssl req -config $CNF_PATH -newkey rsa -keyout $KEY_PATH | openssl x509 \
+  -req -extfile $EXT_PATH -set_serial "0x$(openssl rand -hex 8)" \
+  -days $DAYS -CA $CA_CRT -CAkey $CA_KEY -out $CRT_PATH

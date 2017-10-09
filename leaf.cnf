@@ -1,0 +1,12 @@
+[req]
+utf8 = yes
+prompt = no
+encrypt_key = no
+string_mask = utf8only
+default_md = sha256
+default_bits = 2048
+distinguished_name = dn
+
+[dn]
+C = RU
+CN = "Alexander Zagaynov's private certificate"

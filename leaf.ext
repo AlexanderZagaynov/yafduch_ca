@@ -1,0 +1,2 @@
+basicConstraints = critical,CA:FALSE
+subjectAltName = $ENV::SAN_NAMES
