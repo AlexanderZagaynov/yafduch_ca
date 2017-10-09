@@ -15,11 +15,12 @@ DAYS=730 # 365 * 2
 
 KEY_PATH="$BASE_NAME.key"
 CRT_PATH="$BASE_NAME.crt"
+
 CNF_PATH=leaf.cnf
 EXT_PATH=leaf.ext
 
-CA_CRT=yafduch.crt
-CA_KEY=yafduch.key
+CA_CRT=root.crt
+CA_KEY=root.key
 
 openssl req -config $CNF_PATH -newkey rsa -keyout $KEY_PATH | openssl x509 \
   -req -extfile $EXT_PATH -set_serial "0x$(openssl rand -hex 8)" \

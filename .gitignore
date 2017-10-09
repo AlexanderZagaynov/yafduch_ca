@@ -4,3 +4,7 @@
 
 # private keys
 *.key
+
+# no need to store my certificates without the keys
+*.crt
+!root.crt # to be able download conveniently
