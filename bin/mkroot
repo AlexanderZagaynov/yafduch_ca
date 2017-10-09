@@ -1,0 +1,9 @@
+#!/bin/sh
+
+CA_NAME='yafduch'
+CA_DAYS=1095 # 365 * 3
+
+CRT_PATH="$CA_NAME.crt"
+CNF_PATH="$CA_NAME.cnf"
+
+openssl req -config $CNF_PATH -newkey rsa -x509 -days $CA_DAYS -out $CRT_PATH

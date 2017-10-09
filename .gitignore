@@ -1,0 +1,6 @@
+# temporary stuff and system files
+/tmp
+.DS_Store
+
+# private keys
+*.key
