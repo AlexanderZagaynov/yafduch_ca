@@ -1,0 +1,18 @@
+[req]
+utf8 = yes
+prompt = no
+encrypt_key = no
+string_mask = utf8only
+default_md = sha256
+default_bits = 4096
+default_keyfile = yafduch.key
+x509_extensions = ext
+distinguished_name = dn
+
+[ext]
+basicConstraints=critical,CA:TRUE
+
+[dn]
+C = RU
+CN = "Alexander Zagaynov's Root CA"
+emailAddress = zalex80@gmail.com
