@@ -5,5 +5,9 @@ KEY_PATH=root.key
 CRT_PATH=root.crt
 CNF_PATH=root.cnf
 
-openssl req -config $CNF_PATH -newkey rsa -x509 -days $CA_DAYS \
-  -keyout $KEY_PATH -out $CRT_PATH
+openssl req \
+  -config $CNF_PATH \
+  -newkey rsa -x509 \
+  -keyout $KEY_PATH \
+  -days $CA_DAYS \
+  -out $CRT_PATH
