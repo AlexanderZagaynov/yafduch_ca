@@ -1,0 +1,13 @@
+basicConstraints = CA:FALSE
+authorityKeyIdentifier = keyid, issuer
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+
+# subjectAltName = $ENV::SAN_NAMES
+# subjectAltName = @alt_names
+
+# [alt_names]
+# DNS.1 = ${ENV::BASE_NAME}
+# DNS.2 = $ENV::BASE_NAME.local
+# DNS.3 = *.$ENV::BASE_NAME
+# DNS.4 = *.$ENV::BASE_NAME.local
+# DNS.5 = $ENV::IP_ADDRESS
