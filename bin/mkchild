@@ -3,35 +3,34 @@
 # usage
 # bin/mkchild host_name <host_ip>
 
-## TODO: macos zsh
-# setopt nomultios
-# unset MULTIOS
-
-export BASE_NAME=$1
+BASE_NAME=$1
 IP_ADDRESS=$2
 
-san_names=(
-  "DNS:$BASE_NAME"
-  "DNS:$BASE_NAME.local"
-  "DNS:*.$BASE_NAME"
-  "DNS:*.$BASE_NAME.local"
-)
+san_names=()
 
-if [[ ! -z "$IP_ADDRESS" ]]
-then
+if [[ "$BASE_NAME" != 'localhost' ]]; then
   san_names+=(
-    "IP:$IP_ADDRESS"
-    "DNS:$IP_ADDRESS"
-  )
-elif [[ "$BASE_NAME" == 'localhost' ]]
-then
-  san_names+=(
-    "IP:127.0.0.1"
-    "DNS:127.0.0.1"
-    "DNS:127.0.0.1.nip.io"
-    "DNS:*.127.0.0.1.nip.io"
+    "DNS:$BASE_NAME"
+    "DNS:$BASE_NAME.local"
+    "DNS:*.$BASE_NAME"
+    "DNS:*.$BASE_NAME.local"
   )
 fi
+
+if [[ ! -z "$IP_ADDRESS" ]]; then
+  san_names+=("IP:$IP_ADDRESS" "DNS:$IP_ADDRESS")
+fi
+
+san_names+=(
+  "IP:127.0.0.1"
+  "DNS:127.0.0.1"
+  "DNS:localhost"
+  "DNS:localhost.local"
+  "DNS:*.localhost"
+  "DNS:*.localhost.local"
+  "DNS:127.0.0.1.nip.io"
+  "DNS:*.127.0.0.1.nip.io"
+)
 
 export SAN_NAMES=$(IFS=,; echo "${san_names[*]}")
 
@@ -57,6 +56,7 @@ openssl req \
 openssl x509 -req \
   -issuer \
   -dates \
+  -sha256 \
   -CA $CA_CRT \
   -CAkey $CA_KEY \
   -extfile <(cat $EXT_PATH; echo "subjectAltName=$SAN_NAMES") \

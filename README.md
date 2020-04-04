@@ -19,7 +19,9 @@ Files `./root.key` and `./root.crt` will be overwritten without asking for confi
 
 ## Make child certificate
 
-    $ bin/mkchild localhost
+    $ bin/mkchild homesrv
     ...
-    $ bin/view_crt localhost.crt
-    $ bin/view_key localhost.key
+    $ bin/view_crt homesrv.crt
+    $ bin/view_key homesrv.key
+    ...
+    $ cat homesrv.crt homesrv.key >> homesrv.cert
