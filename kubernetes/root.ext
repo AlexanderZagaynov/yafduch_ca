@@ -1,0 +1,4 @@
+# keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+basicConstraints = critical, CA:true, pathlen:0
+authorityKeyIdentifier = keyid:always, issuer
+subjectKeyIdentifier = hash

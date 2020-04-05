@@ -25,3 +25,7 @@ Files `./root.key` and `./root.crt` will be overwritten without asking for confi
     $ bin/view_key homesrv.key
     ...
     $ cat homesrv.crt homesrv.key >> homesrv.cert
+
+## Make Kubernetes CA certificate
+
+    $ kubernetes/mkroot

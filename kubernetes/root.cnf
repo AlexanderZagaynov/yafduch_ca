@@ -4,15 +4,10 @@ prompt = no
 encrypt_key = no
 string_mask = utf8only
 default_md = sha256
-default_bits = 4096
-x509_extensions = ext
+default_bits = 2048
 distinguished_name = dn
-
-[ext]
-basicConstraints = critical, CA:TRUE
-subjectKeyIdentifier = hash
 
 [dn]
 C = RU
-CN = "Alexander Zagaynov's Root CA"
+CN = "Alexander Zagaynov's Root CA for Kubernetes"
 emailAddress = zalex80@gmail.com

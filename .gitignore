@@ -4,6 +4,7 @@
 
 # private keys
 *.key
+*.csr
 
 # no need to store my certificates without the keys
 *.crt

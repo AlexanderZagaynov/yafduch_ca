@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# usage
+# kubernetes/mkroot <host_name <host_ip>>
+
+BASE_NAME=$1
+IP_ADDRESS=$2
+
+# BASE_PATH="`pwd`/`dirname "$0"`"
+BASE_PATH="./`dirname "$0"`"
+
+san_names=(
+  "kubernetes.docker.internal"
+  # "*.*.svc.cluster.local"
+  "*.svc.cluster.local"
+  "svc.cluster.local"
+  "kubernetes"
+)
+
+if [[ ! -z "$BASE_NAME" ]]; then
+  san_names+=(
+    "DNS:$BASE_NAME"
+    "DNS:$BASE_NAME.local"
+    "DNS:*.$BASE_NAME"
+    "DNS:*.$BASE_NAME.local"
+    # "DNS:*.*.$BASE_NAME"
+    # "DNS:*.*.$BASE_NAME.local"
+  )
+fi
+
+if [[ ! -z "$IP_ADDRESS" ]]; then
+  san_names+=("IP:$IP_ADDRESS" "DNS:$IP_ADDRESS")
+fi
+
+san_names+=(
+  "IP:127.0.0.1"
+  "DNS:127.0.0.1"
+  "DNS:localhost"
+  "DNS:*.localhost"
+  # "DNS:*.*.localhost"
+  "DNS:127.0.0.1.nip.io"
+  "DNS:*.127.0.0.1.nip.io"
+  # "DNS:*.*.127.0.0.1.nip.io"
+)
+
+SAN_NAMES=$(IFS=,; echo "${san_names[*]}")
+
+BITS=2048
+DAYS=730 # 365 * 2
+
+FILES_NAME="root"
+if [[ ! -z "$BASE_NAME" ]]; then FILES_NAME="$BASE_NAME.$FILES_NAME"; fi
+
+KEY_PATH="$BASE_PATH/$FILES_NAME.key"
+CRT_PATH="$BASE_PATH/$FILES_NAME.crt"
+
+CNF_PATH="$BASE_PATH/root.cnf"
+EXT_PATH="$BASE_PATH/root.ext"
+CSR_PATH="$BASE_PATH/root.csr"
+
+CA_CRT="$BASE_PATH/../root.crt"
+CA_KEY="$BASE_PATH/../root.key"
+
+SERIAL="0x$(openssl rand -hex 8)"
+
+openssl req \
+  -newkey rsa \
+  -config $CNF_PATH \
+  -keyout $KEY_PATH \
+  -out $CSR_PATH
+
+openssl x509 -req \
+  -in $CSR_PATH \
+  -issuer \
+  -dates \
+  -sha256 \
+  -CA $CA_CRT \
+  -CAkey $CA_KEY \
+  -extfile $EXT_PATH \
+  -set_serial $SERIAL \
+  -days $DAYS \
+  -out $CRT_PATH
+  # -extfile <(cat $EXT_PATH; echo "subjectAltName=$SAN_NAMES") \
+
+cat $CA_CRT >> $CRT_PATH
